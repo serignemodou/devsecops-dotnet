@@ -1,8 +1,7 @@
 pipeline {
-    agent none
+    agent "agent-jenkins"
     stages {
         stage ("clone-repo-git"){
-            agent "agent-jenkins"
             steps {
                 echo "Connection to Github and Clone Repo"
                 script {
