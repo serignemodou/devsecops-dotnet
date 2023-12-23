@@ -1,5 +1,7 @@
 pipeline {
-    agent "agent-jenkins"
+    agent { 
+        label 'agent-jenkins'
+    }
     stages {
         stage ("clone-repo-git"){
             steps {
