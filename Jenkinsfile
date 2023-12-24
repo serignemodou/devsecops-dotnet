@@ -16,7 +16,7 @@ pipeline {
         stage("Sonarqube Analysis"){
             echo "Scan Source Code"
             steps {
-                def sqScannerMsBuildHome = tool 'sonarqube-scanner-net'
+                def scannerHome = tool 'sonarqube-scanner-net'
                 withSonarQubeEnv(credentialsId: 'auth-sonar') {
                     sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:dotnet"
                     sh "dotnet build"
