@@ -18,9 +18,9 @@ pipeline {
                 script {
                     def scannerHome = tool 'sonarqube-scanner-net'
                     withSonarQubeEnv(credentialsId: 'auth-sonar', installationName: 'sonarqube-server') {
-                    bat "${scannerHome}\\SonarQube.Scanner.MSBuild.exe begin /k:dotnet"
-                    bat "MSBuild.exe /t:Rebuild"
-                    bat "${scannerHome}\\SonarQube.Scanner.MSBuild.exe end"
+                    sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:dotnet"
+                    sh "dotnet build"
+                    sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
                     }
                 }
             }
