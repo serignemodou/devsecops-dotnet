@@ -14,13 +14,11 @@ pipeline {
             }
         }
         stage("Sonarqube Analysis"){
-            steps {
-                def scannerHome = tool 'sonarqube-scanner-net'
-                withSonarQubeEnv(credentialsId: 'auth-sonar') {
-                    sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:dotnet"
-                    sh "dotnet build"
-                    sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
-                }
+            def scannerHome = tool 'sonarqube-scanner-net'
+            withSonarQubeEnv(credentialsId: 'auth-sonar', InstallationName: 'sonarqube-server') {
+                sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:dotnet"
+                sh "dotnet build"
+                sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
             }
         }
     }   
