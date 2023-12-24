@@ -23,6 +23,8 @@ pipeline {
                 script {
                     def scannerHome = tool 'sonarqube-scanner-net'
                     withSonarQubeEnv(credentialsId: 'auth-sonar', installationName: 'sonarqube-server') {
+                    env.PATH = "$PATH:/home/azureuser/.dotnet"
+                    env.PATH = "$PATH:/home/azureuser/.dotnet/tools"
                     sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:'${SONAR_PROJECT_KEY}' /d:sonar.host.url=${SONAR_URL} /d:sonar.login=${SONAR_TOKEN} "
                     sh "dotnet build /webApi/."
                     sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
