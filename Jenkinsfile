@@ -14,7 +14,6 @@ pipeline {
             }
         }
         stage("Sonarqube Analysis"){
-            echo "Scan Source Code"
             steps {
                 def scannerHome = tool 'sonarqube-scanner-net'
                 withSonarQubeEnv(credentialsId: 'auth-sonar') {
