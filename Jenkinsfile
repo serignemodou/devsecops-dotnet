@@ -50,11 +50,11 @@ pipeline {
         }*/
         stage("Owasp Dependency Check Vulnerabilities"){
             steps{
-                dependencyCheck additionalArguments '''
-                    -o './'
-                    -s './webApi'
-                    -f 'ALL'
-                    --prettyPrint''' odcInstallation: 'Owasp-dependency-check'
+                dependencyCheck additionalArguments: '''
+                    -o "./"
+                    -s "./webApi"
+                    -f "ALL"
+                    --prettyPrint''', odcInstallation: 'Owasp-dependency-check'
                 dependencyCheckPublisher pattern: 'dependency-check-report.xml'
             }
         }
