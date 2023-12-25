@@ -12,7 +12,7 @@ var serviceVersion = "1.0.0";
 
 
 var greeterMeter = new Meter("otel-test", "1.0.0");
-//var countGreetings = greeterMeter.CreateCounter<int>("greetings.count", description: "Counts the number of greetings");
+var countGreetings = greeterMeter.CreateCounter<int>("greetings.count", description: "Counts the number of greetings");
 
 builder.Services.AddDbContext<UserDb>(opt => opt.UseInMemoryDatabase("TodoList"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -57,6 +57,8 @@ app.MapGet("/users", async (UserDb db, Tracer tracer, ILogger<Program> logger) =
     
     return Results.Ok(users);
 
+    countGreetings.Add(1);
+
     logger.LogInformation("Get All Users success !!");
 });
 
@@ -73,6 +75,8 @@ app.MapGet("/user/{id}", async (int id, UserDb db, Tracer tracer, ILogger<Progra
     }
             
     return Results.NotFound();
+
+    countGreetings.Add(1);
     
     logger.LogInformation("Get User success !!");
 });
@@ -85,6 +89,8 @@ app.MapPost("/user/create", async (User user, UserDb db, Tracer tracer, ILogger<
 
     db.Users.Add(user);
     await db.SaveChangesAsync();
+
+    countGreetings.Add(1);
 
     logger.LogInformation("User create success !!");
 
@@ -108,6 +114,8 @@ app.MapPut("/user/update/{id}", async (int id, User inputUser, UserDb db, Tracer
 
     await db.SaveChangesAsync();
 
+    countGreetings.Add(1);
+
     logger.LogInformation("User update success !!");
 
     return Results.NoContent();
@@ -125,6 +133,8 @@ app.MapDelete("/user/delete/{id}", async (int id, UserDb db, Tracer tracer, ILog
         return Results.NoContent();
     }
 
+    countGreetings.Add(1);
+    
     logger.LogInformation("User delete success !!");
 
     return Results.NotFound();
