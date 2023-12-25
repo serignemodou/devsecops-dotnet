@@ -67,21 +67,24 @@ pipeline {
 
         stage("Build Docker Images"){
             steps {
-                withCredentials([usernamePassword(credentialsId: 'auth-dockerhub', passwordVariable: 'password', usernameVariable: 'username')]){
-                    sh 'sudo docker login -u $username -p $password'
-                    sh 'sudo docker build -t $IMAGE_NAME .'
-                    sh 'sudo docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG'
-                    sh 'sudo curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contrib/install.sh | sudo sh -s -- -b /usr/local/bin'
-                    sh 'sudo trivy image $IMAGE_NAME:$IMAGE_TAG --timeout 10m --output report.html || true' 
-                }
-                publishHTML(target: [
-                    allowMissing: true,
-                    alwaysLinkToLastBuild: false,
-                    keepAll: true,
-                    reportDir: ".",
-                    reportFiles: "report.html",
-                    reportName: "Trivy Report",
-            ])
+                script{ 
+                    def formatOption = "--format template --template \"@/usr/local/share/trivy/templates/html.tpl\""
+                    withCredentials([usernamePassword(credentialsId: 'auth-dockerhub', passwordVariable: 'password', usernameVariable: 'username')]){
+                        sh 'sudo docker login -u $username -p $password'
+                        sh 'sudo docker build -t $IMAGE_NAME .'
+                        sh 'sudo docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG'
+                        sh 'sudo curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contrib/install.sh | sudo sh -s -- -b /usr/local/bin'
+                        sh 'sudo trivy image $IMAGE_NAME:$IMAGE_TAG $formatOption  --timeout 10m --output report.html || true' 
+                    }
+                    publishHTML(target: [
+                        allowMissing: true,
+                        alwaysLinkToLastBuild: false,
+                        keepAll: true,
+                        reportDir: ".",
+                        reportFiles: "report.html",
+                        reportName: "Trivy Report",
+                ])
+            }
             }
         }
     }   
