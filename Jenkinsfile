@@ -23,7 +23,7 @@ pipeline {
                 script {
                     def scannerHome = tool name: 'sonarqube-scanner-net', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'
                     withSonarQubeEnv(credentialsId: 'auth-sonar', installationName: 'sonarqube-server') {
-                    //env.PATH = "$PATH:/home/azureuser/.dotnet"
+                    env.PATH = "$PATH:/home/azureuser/.dotnet"
                     env.PATH = "$PATH:/home/azureuser/.dotnet/tools"
                     //sh "dotnet tool install --global dotnet-ef --version 7.0"
                     sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:\"dotnet\""
