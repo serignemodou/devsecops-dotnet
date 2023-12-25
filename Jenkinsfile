@@ -72,9 +72,17 @@ pipeline {
                     sh 'sudo docker build -t $IMAGE_NAME .'
                     sh 'sudo docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG'
                     sh 'sudo curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contrib/install.sh | sudo sh -s -- -b /usr/local/bin'
-                    sh 'sudo trivy image $IMAGE_NAME:$IMAGE_TAG' 
+                    sh 'sudo trivy image $IMAGE_NAME:$IMAGE_TAG --timeout 10m --output report.html || true' 
                 }
             }
+            publishHTML(target: [
+                allowMissing: true,
+                alwaysLinkToLastBuild: false,
+                keepAll: true,
+                reportDir: ".",
+                reportFiles: "report.html",
+                reportName: "Trivy Report",
+            ])
         }
     }   
 }
