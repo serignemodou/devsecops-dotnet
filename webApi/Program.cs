@@ -76,7 +76,7 @@ app.MapGet("/user/{id}", async (int id, UserDb db, Tracer tracer, ILogger<Progra
             
     return Results.NotFound();
 
-    countGreetings.Add(1);
+    countGreetings.Add(2);
     
     logger.LogInformation("Get User success !!");
 });
@@ -90,7 +90,7 @@ app.MapPost("/user/create", async (User user, UserDb db, Tracer tracer, ILogger<
     db.Users.Add(user);
     await db.SaveChangesAsync();
 
-    countGreetings.Add(1);
+    countGreetings.Add(3);
 
     logger.LogInformation("User create success !!");
 
@@ -114,7 +114,7 @@ app.MapPut("/user/update/{id}", async (int id, User inputUser, UserDb db, Tracer
 
     await db.SaveChangesAsync();
 
-    countGreetings.Add(1);
+    countGreetings.Add(4);
 
     logger.LogInformation("User update success !!");
 
@@ -133,8 +133,8 @@ app.MapDelete("/user/delete/{id}", async (int id, UserDb db, Tracer tracer, ILog
         return Results.NoContent();
     }
 
-    countGreetings.Add(1);
-    
+    countGreetings.Add(5);
+
     logger.LogInformation("User delete success !!");
 
     return Results.NotFound();
