@@ -74,15 +74,15 @@ pipeline {
                     sh 'sudo curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contrib/install.sh | sudo sh -s -- -b /usr/local/bin'
                     sh 'sudo trivy image $IMAGE_NAME:$IMAGE_TAG --timeout 10m --output report.html || true' 
                 }
-            }
-            publishHTML(target: [
-                allowMissing: true,
-                alwaysLinkToLastBuild: false,
-                keepAll: true,
-                reportDir: ".",
-                reportFiles: "report.html",
-                reportName: "Trivy Report",
+                publishHTML(target: [
+                    allowMissing: true,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: ".",
+                    reportFiles: "report.html",
+                    reportName: "Trivy Report",
             ])
+            }
         }
     }   
 }
