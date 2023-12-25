@@ -18,6 +18,7 @@ pipeline {
                 SONAR_TOKEN=credentials('auth-sonar')
                 SONAR_URL="http://localhost:9000/"
                 SONAR_PROJECT_KEY="dotnet"
+                PROJECT_NAME="webApi"
             }
             steps { 
                 script {
@@ -27,7 +28,7 @@ pipeline {
                         env.PATH = "$PATH:/home/azureuser/.dotnet/tools"
                         //sh "dotnet tool install --global dotnet-ef --version 7.0"
                         sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:\"devsecops-dotnet\""
-                        sh "dotnet build /webApi/."
+                        sh "dotnet build $PROJECT_NAME"
                         sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
                     }
                 }
