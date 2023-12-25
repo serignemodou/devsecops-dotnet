@@ -69,7 +69,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'auth-dockerhub', passwordVariable: 'password', usernameVariable: 'username')]){
                     sh 'sudo docker login -u $username -p $password'
-                    sh 'sudo docker build $IMAGE_NAME .'
+                    sh 'sudo docker build -t $IMAGE_NAME .'
                     sh 'sudo docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG'
                     sh 'curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contrib/install.sh | sh -s -- -b /usr/local/bin'
                     sh 'trivy image $IMAGE_NAME:$IMAGE_TAG' 
