@@ -16,7 +16,7 @@ pipeline {
         stage("Sonarqube Analysis"){
             environment {
                 SONAR_TOKEN=credentials('auth-sonar')
-                SONAR_URL="http://localhost:9000"
+                SONAR_URL="http://localhost:9000/"
                 SONAR_PROJECT_KEY="dotnet"
             }
             steps { 
@@ -26,7 +26,7 @@ pipeline {
                     env.PATH = "$PATH:/home/azureuser/.dotnet"
                     env.PATH = "$PATH:/home/azureuser/.dotnet/tools"
                     //sh "dotnet tool install --global dotnet-ef --version 7.0"
-                    sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:\"dotnet\" /d:sonar.host.url=${SONAR_URL} /d:sonar.login=${SONAR_TOKEN}"
+                    sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll begin /k:\"dotnet\" /d:sonar.login=\"$SONAR_TOKEN\ /d:\"sonar.host.url=$SONAR_URL\" "
                     sh "dotnet build /webApi/."
                     sh "dotnet ${scannerHome}/SonarScanner.MSBuild.dll end"
                     }
