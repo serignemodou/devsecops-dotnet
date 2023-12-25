@@ -21,7 +21,7 @@ pipeline {
             }
             steps { 
                 script {
-                    def scannerHome = tool 'sonarqube-scanner-net', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'
+                    def scannerHome = tool name: 'sonarqube-scanner-net', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'
                     withSonarQubeEnv(credentialsId: 'auth-sonar', installationName: 'sonarqube-server') {
                     //env.PATH = "$PATH:/home/azureuser/.dotnet"
                     env.PATH = "$PATH:/home/azureuser/.dotnet/tools"
