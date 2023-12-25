@@ -54,7 +54,7 @@ pipeline {
                     -o './'
                     -s './webApi'
                     -f 'ALL'
-                    --prettyPrint''', odcInstallation: 'Owasp-dependency-check'
+                    --prettyPrint''' odcInstallation: 'Owasp-dependency-check'
                 dependencyCheckPublisher pattern: 'dependency-check-report.xml'
             }
         }
