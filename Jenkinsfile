@@ -2,6 +2,12 @@ pipeline {
     agent { 
         label 'agent-jenkins'
     }
+    environment {
+        REPOSITORY_NAME="dotnet"
+        DOCKER_USERNAME="smodou"
+        IMAGE_TAG="v1.0.0"
+        IMAGE_NAME= "$DOCKER_USERNAME" + "/" + "$REPOSITORY_NAME"
+    }
     stages {
         stage ("CleanUp Workspace"){
             steps {
@@ -56,6 +62,18 @@ pipeline {
                     -f "ALL"
                     --prettyPrint''', odcInstallation: 'Owasp-dependency-check'
                 dependencyCheckPublisher pattern: 'dependency-check-report.xml'
+            }
+        }
+
+        stage("Build Docker Images"){
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'auth-dockerhub', passwordVariable: 'password', usernameVariable: 'username')]){
+                    sh 'docker login -u $username -p $password'
+                    sh 'docker build $IMAGE_NAME .'
+                    sh 'docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG'
+                    sh 'curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/master/contrib/install.sh | sh -s -- -b /usr/local/bin'
+                    sh 'trivy image $IMAGE_NAME:$IMAGE_TAG' 
+                }
             }
         }
     }   
