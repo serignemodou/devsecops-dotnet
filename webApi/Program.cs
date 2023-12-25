@@ -12,7 +12,7 @@ var serviceVersion = "1.0.0";
 
 
 var greeterMeter = new Meter("otel-test", "1.0.0");
-var countGreetings = greeterMeter.CreateCounter<int>("greetings.count", description: "Counts the number of greetings");
+//var countGreetings = greeterMeter.CreateCounter<int>("greetings.count", description: "Counts the number of greetings");
 
 builder.Services.AddDbContext<UserDb>(opt => opt.UseInMemoryDatabase("TodoList"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -38,12 +38,12 @@ builder.Services.AddOpenTelemetry()
         .AddMeter(greeterMeter.Name);
     });
 
-/*builder.Logging.AddOpenTelemetry(logging =>
+builder.Logging.AddOpenTelemetry(logging =>
 {
   logging.IncludeScopes = true;
   logging.AddOtlpExporter();
 });
-*/
+
 
 var app = builder.Build();
 
