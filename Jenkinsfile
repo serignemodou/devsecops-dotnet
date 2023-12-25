@@ -23,7 +23,7 @@ pipeline {
                 script {
                     def scannerHome = tool name: 'sonarqube-scanner-net', type: 'hudson.plugins.sonar.MsBuildSQRunnerInstallation'
                     withSonarQubeEnv(credentialsId: 'auth-sonar', installationName: 'sonarqube-server') {
-                        sh "${tool("scannerHome")}/bin/sonar-scanner -X \
+                        sh "${tool("sonarqube-scanner-net")}/bin/sonar-scanner -X \
                         -Dsonar.host.url=http://localhost:9000 \
                         -Dsonar.login=${env.SONAR_TOKEN}"
                         env.PATH = "$PATH:/home/azureuser/.dotnet"
